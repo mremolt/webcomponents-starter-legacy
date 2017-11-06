@@ -1,0 +1,10 @@
+{
+  "extends": "./config/tsconfig.common.json",
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "es2015",
+    "outDir": "build",
+    "declaration": false
+  },
+  "include": ["src/custom-typings.d.ts", "src/main.ts", "src/app/**/*.ts"]
+}

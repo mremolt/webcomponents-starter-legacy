@@ -1,0 +1,19 @@
+{
+  "extends": "./config/tsconfig.common.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "outDir": "build",
+    "plugins": [
+      {
+        "name": "typescript-lit-html-plugin"
+      }
+    ]
+  },
+  "include": [
+    "src/custom-typings.d.ts",
+    "src/**/*.ts",
+    "spec/**/*.ts",
+    "config"
+  ],
+  "exclude": ["src/main.aot.ts"]
+}
