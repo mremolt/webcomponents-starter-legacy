@@ -1,7 +1,7 @@
 # webcomponents-starter
 
 Proof of concept to use web components for web apps (including redux).
-Coming from an angular+redux+webpack perspective I try to replage ng with pure webcomponents + lit-html. 
+Coming from an angular+redux+webpack perspective I try to replace ng with pure webcomponents + lit-html. 
 
 As this project currently contains no polyfills (it's a proof of concept after all), it is only tested to run in current Chrome. 
 
