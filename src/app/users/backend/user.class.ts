@@ -1,42 +1,19 @@
-import { Record } from 'immutable';
+import { Model } from '../../utils/model';
 
 export interface IUser {
   id: number;
-  name: string;
-  username: string;
+  firstname: string;
+  lastname: string;
   email: string;
-  address: any;
-  phone: string;
-  website: string;
-  company: any;
 }
 
-const DEFAULT_VALUES = {
-  id: 0,
-  name: '',
-  username: '',
-  email: '',
-  address: {},
-  phone: '',
-  website: '',
-  company: {},
-};
-
-export class User extends Record(DEFAULT_VALUES) {
+export class User extends Model<IUser> {
   public readonly id: number;
-  public readonly name: string;
-  public readonly username: string;
+  public readonly firstname: string;
+  public readonly lastname: string;
   public readonly email: string;
-  public readonly address: any;
-  public readonly phone: string;
-  public readonly website: string;
-  public readonly company: any;
 
-  get firstname(): string {
-    return this.name.split(' ')[0];
-  }
-
-  get lastname(): string {
-    return this.name.split(' ')[1];
+  get name(): string {
+    return `${this.firstname} ${this.lastname}`;
   }
 }

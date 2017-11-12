@@ -1,24 +1,33 @@
-import { Map, fromJS } from 'immutable';
-import { Reducer, AnyAction } from 'redux';
-import { combineReducers } from 'redux-immutable';
-import { usersReducer } from '../users/backend/users.reducer';
-import { currentUserReducer } from '../users/backend/current-user.reducer';
+import { Reducer, AnyAction, combineReducers } from 'redux';
 
-export const initialState = fromJS({});
+import { usersReducer, IUsersState } from '../users/backend/users.reducer';
+import { LOCATION_CHANGE } from '../constants';
+import {
+  currentUserReducer,
+  ICurrentUserState,
+} from '../users/backend/current-user.reducer';
+
+export const initialState = {};
 
 export function routesReducer(
-  state: Map<string, any> = initialState,
+  state: object = initialState,
   action: AnyAction
-): Map<string, any> {
+): object {
   switch (action.type) {
-    case 'LOCATION_CHANGE':
-      return fromJS(action.payload);
+    case LOCATION_CHANGE:
+      return action.payload;
   }
 
   return state;
 }
 
-export const rootReducer: Reducer<Map<string, any>> = combineReducers({
+export interface IState {
+  routes: any;
+  users: IUsersState;
+  currentUser: ICurrentUserState;
+}
+
+export const rootReducer: Reducer<any> = combineReducers({
   routes: routesReducer,
   users: usersReducer,
   currentUser: currentUserReducer,

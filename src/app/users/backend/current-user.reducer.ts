@@ -1,28 +1,38 @@
-import { Map, fromJS } from 'immutable';
 import { AnyAction } from 'redux';
-import { USER_FETCH_FULFILLED, USER_FETCH_PENDING } from './users.actions';
+import lensPath from 'ramda/src/lensPath';
+import set from 'ramda/src/set';
+import compose from 'ramda/src/compose';
 
-const initialState = fromJS({
+import { USER_FETCH_FULFILLED, USER_FETCH_PENDING } from './users.actions';
+import { IUser } from './user.class';
+
+export interface ICurrentUserState {
+  loading: boolean;
+  error: Error | null;
+  entity: IUser;
+}
+
+const initialState: ICurrentUserState = {
   loading: false,
   error: null,
-  entity: {},
-});
+  entity: { id: 0, firstname: '', lastname: '', email: '' },
+};
 
 export function currentUserReducer(
-  state: Map<string, any> = initialState,
+  state: ICurrentUserState = initialState,
   action: AnyAction
-): Map<string, any> {
+): ICurrentUserState {
+  const loadingPath = lensPath(['loading']);
+  const entityPath = lensPath(['entity']);
+
   switch (action.type) {
     case USER_FETCH_PENDING:
-      return initialState.merge({ loading: true });
+      return set(loadingPath, true, initialState) as ICurrentUserState;
 
     case USER_FETCH_FULFILLED:
-      return state.merge(
-        fromJS({
-          loading: false,
-          entity: action.payload,
-        })
-      );
+      return compose(set(loadingPath, false), set(entityPath, action.payload))(
+        state
+      ) as ICurrentUserState;
   }
 
   return state;

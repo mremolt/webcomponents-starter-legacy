@@ -1,2 +1,3 @@
 import Environment from './environments/development';
-export default Environment;
+
+export const environment = new Environment();

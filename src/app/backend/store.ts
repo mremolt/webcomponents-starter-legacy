@@ -1,20 +1,29 @@
-import { createStore, Store, applyMiddleware } from 'redux';
-import { createLogger } from 'redux-logger';
+import {
+  createStore,
+  applyMiddleware,
+  Store,
+  Middleware,
+  compose,
+} from 'redux';
+import logger from 'redux-logger';
 import promiseMiddleware from 'redux-promise-middleware';
-import { Map } from 'immutable';
 
-import { rootReducer } from './root.reducer';
+import { rootReducer, IState } from './root.reducer';
 
-const stateTransformer = (state: any) => {
-  return state.toJS();
-};
+let middleware: Middleware[] = [promiseMiddleware()];
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const logger = createLogger({
-  stateTransformer,
-});
+middleware =
+  process.env.NODE_ENV !== 'production'
+    ? [
+        require('redux-immutable-state-invariant').default(),
+        logger,
+        ...middleware,
+      ]
+    : middleware;
 
-export const store: Store<Map<string, any>> = createStore(
+export const store: Store<IState> = createStore(
   rootReducer,
-  Map({}),
-  applyMiddleware(logger, promiseMiddleware())
+  {},
+  composeEnhancers(applyMiddleware(...middleware))
 );

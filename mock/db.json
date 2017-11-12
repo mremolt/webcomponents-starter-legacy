@@ -1,0 +1,71 @@
+{
+  "order": {
+    "items": [
+      {
+        "productId": 1,
+        "userId": 1,
+        "numberOfProducts": 4
+      },
+      {
+        "productId": 3,
+        "userId": 1,
+        "numberOfProducts": 4
+      },
+      {
+        "productId": 2,
+        "userId": "2",
+        "numberOfProducts": 1
+      },
+      {
+        "productId": "4",
+        "userId": "2",
+        "numberOfProducts": 5
+      },
+      {
+        "productId": "4",
+        "userId": "1",
+        "numberOfProducts": 3
+      }
+    ]
+  },
+  "products": [
+    {
+      "id": 1,
+      "articleId": "a-11201",
+      "label": "\"Falscher Hase\"-Pfanne",
+      "price": 7.95
+    },
+    {
+      "id": 2,
+      "articleId": "a-01613",
+      "label": "Hähnchen-Paella",
+      "price": 9.85
+    },
+    {
+      "id": 3,
+      "articleId": "a-01676",
+      "label": "Schlemmer-Menü: Rinderroulade \"Hausfrauen Art\"",
+      "price": 6.95
+    },
+    {
+      "id": 4,
+      "articleId": "a-44444",
+      "label": "Pizza Salami",
+      "price": 6.5
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "firstname": "Arthur",
+      "lastname": "Dent",
+      "email": "arthur@earth.com"
+    },
+    {
+      "id": 2,
+      "firstname": "Ford",
+      "lastname": "Perfect",
+      "email": "ford@betelgeuse.com"
+    }
+  ]
+}

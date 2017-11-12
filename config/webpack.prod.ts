@@ -1,4 +1,5 @@
 import * as webpackMerge from 'webpack-merge';
+import * as webpack from 'webpack';
 
 import { hasNpmFlag } from './helpers';
 import commonConfig from './webpack.common';
@@ -44,12 +45,19 @@ export default webpackMerge(commonConfig(options), {
   plugins: [
     new Uglify({
       sourceMap: true,
+      uglifyOptions: {
+        compress: {
+          passes: 3,
+        },
+      },
     }),
 
     new CompressionPlugin({
       regExp: /\.css$|\.html$|\.js$|\.map$/,
       threshold: 2 * 1024,
     }),
+
+    new webpack.optimize.ModuleConcatenationPlugin(),
 
     // new OfflinePlugin({
     //   autoUpdate: 5 * 60 * 1000,

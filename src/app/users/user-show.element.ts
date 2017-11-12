@@ -5,12 +5,6 @@ import { property } from '../utils/decorators';
 import { WithTemplate } from '../utils/template.mixin';
 import { User } from './backend/user.class';
 
-export interface IPerson {
-  id: string;
-  firstname: string;
-  lastname: string;
-}
-
 export class UserShowElement extends WithTemplate(HTMLElement) {
   @property() public user: User = new User();
 

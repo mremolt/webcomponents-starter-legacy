@@ -9,11 +9,11 @@ export class AppElement extends WithTemplate(HTMLElement) {
   @property() private page: HTMLElement;
 
   public connectedCallback() {
-    console.timeEnd('bootstrap');
+    this.page = document.createElement('div');
 
     store.subscribe(() => {
-      const Element = store.getState().getIn(['routes', 'element']);
-      if (!(this.page instanceof Element)) {
+      const Element = store.getState().routes.element;
+      if (Element && !(this.page.constructor === Element)) {
         this.page = new Element();
       }
     });

@@ -7,11 +7,6 @@ interface NodeModule {
   hot: any;
 }
 
-interface System {
-  import(request: string): Promise<any>;
-}
-var System: System;
-
 interface Window {
   __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: any;
 }
@@ -20,5 +15,3 @@ declare module '*.json' {
   const value: any;
   export default value;
 }
-
-declare module 'hyperhtml';

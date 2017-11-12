@@ -3,6 +3,8 @@ import { html, render } from 'lit-html/lib/lit-extended';
 
 export function WithTemplate(Base: Constructor<HTMLElement>) {
   return class extends Base {
+    public needsRender: boolean = true;
+
     public connectedCallback() {
       this.updateView();
     }
@@ -11,11 +13,13 @@ export function WithTemplate(Base: Constructor<HTMLElement>) {
       return html``;
     }
 
-    public updateView() {
-      // await 0;
-      setTimeout(() => {
+    public async updateView() {
+      if (this.needsRender) {
+        this.needsRender = false;
+        await 0;
+        this.needsRender = true;
         render(this.render(), this as HTMLElement);
-      });
+      }
     }
   };
 }
