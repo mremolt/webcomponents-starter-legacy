@@ -84,8 +84,12 @@ export default function(options: any): any {
       }),
 
       new webpack.optimize.CommonsChunkPlugin({
+        minChunks: 2,
+        children: true,
+      }),
+
+      new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor',
-        chunks: ['css', 'offline', 'main'],
         minChunks: module =>
           module.context && module.context.indexOf('node_modules') !== -1,
       }),

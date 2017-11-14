@@ -1,9 +1,9 @@
-import { setupRoutes } from './app/routes';
+import '@webcomponents/custom-elements';
 
-console.time('bootstrap');
+import { setupRoutes } from './app/routes';
+import { store } from './app/backend/store';
 
 import './app/app.element';
 import './app/header/header.element';
-import './app/users/user-show.element';
 
-setupRoutes();
+setupRoutes(store);

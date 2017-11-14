@@ -1,5 +1,9 @@
 import { AnyAction } from 'redux';
-import { USERS_FETCH_FULFILLED, USERS_FETCH_PENDING } from './users.actions';
+import {
+  USERS_FETCH_FULFILLED,
+  USERS_FETCH_PENDING,
+  USER_DELETE_FULFILLED,
+} from './users.actions';
 import lensPath from 'ramda/src/lensPath';
 import set from 'ramda/src/set';
 import compose from 'ramda/src/compose';
@@ -33,6 +37,10 @@ export function usersReducer(
         set(loadingPath, false),
         set(entitiesPath, action.payload)
       )(state) as IUsersState;
+
+    case USER_DELETE_FULFILLED:
+      const entities = state.entities.filter(e => e.id !== action.payload);
+      return { ...state, entities };
   }
 
   return state;

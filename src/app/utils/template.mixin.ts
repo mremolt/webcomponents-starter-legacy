@@ -5,6 +5,10 @@ export function WithTemplate(Base: Constructor<HTMLElement>) {
   return class extends Base {
     public needsRender: boolean = true;
 
+    constructor() {
+      super();
+    }
+
     public connectedCallback() {
       this.updateView();
     }

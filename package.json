@@ -14,14 +14,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@webcomponents/custom-elements": "^1.0.4",
     "axios": "^0.17.1",
     "bootstrap": "^4.0.0-beta.2",
+    "cssnano": "^3.10.0",
     "lit-html": "^0.7.1",
     "page": "^1.7.1",
     "ramda": "^0.25.0",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-promise-middleware": "^4.4.2",
+    "redux-thunk": "^2.2.0",
     "reselect": "^3.0.1",
     "tslib": "^1.8.0",
     "validate.js": "^0.12.0"

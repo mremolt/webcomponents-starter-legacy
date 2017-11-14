@@ -1,13 +1,13 @@
 import { Reducer, AnyAction, combineReducers } from 'redux';
 
 import { usersReducer, IUsersState } from '../users/backend/users.reducer';
-import { LOCATION_CHANGE } from '../constants';
+import { LOCATION_CHANGE, ROUTE_UPDATE } from '../constants';
 import {
   currentUserReducer,
   ICurrentUserState,
 } from '../users/backend/current-user.reducer';
 
-export const initialState = {};
+export const initialState = { context: null, element: null, route: '' };
 
 export function routesReducer(
   state: object = initialState,
@@ -15,7 +15,14 @@ export function routesReducer(
 ): object {
   switch (action.type) {
     case LOCATION_CHANGE:
-      return action.payload;
+      return {
+        ...state,
+        ...action.payload,
+        route: action.payload.context.pathname,
+      };
+
+    case ROUTE_UPDATE:
+      return { ...state, route: action.payload };
   }
 
   return state;

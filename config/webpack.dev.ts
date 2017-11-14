@@ -48,7 +48,7 @@ export default webpackMerge(commonConfig(options), {
   ],
 
   devServer: {
-    port: 3000,
+    port: 3002,
     host: '0.0.0.0',
     historyApiFallback: true,
     // quiet: true,

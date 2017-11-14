@@ -1,11 +1,11 @@
 import * as webpackMerge from 'webpack-merge';
 import * as webpack from 'webpack';
 
-import { hasNpmFlag } from './helpers';
+import { hasNpmFlag, root } from './helpers';
 import commonConfig from './webpack.common';
 
 const Uglify = require('uglifyjs-webpack-plugin');
-// const OfflinePlugin = require('offline-plugin');
+const OfflinePlugin = require('offline-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin;
@@ -21,7 +21,7 @@ export default webpackMerge(commonConfig(options), {
   devtool: 'source-map',
 
   entry: {
-    // offline: root('src', 'service-worker.ts')
+    offline: root('src', 'service-worker.ts'),
   },
 
   module: {
@@ -43,6 +43,8 @@ export default webpackMerge(commonConfig(options), {
   },
 
   plugins: [
+    new webpack.optimize.ModuleConcatenationPlugin(),
+
     new Uglify({
       sourceMap: true,
       uglifyOptions: {
@@ -57,15 +59,13 @@ export default webpackMerge(commonConfig(options), {
       threshold: 2 * 1024,
     }),
 
-    new webpack.optimize.ModuleConcatenationPlugin(),
-
-    // new OfflinePlugin({
-    //   autoUpdate: 5 * 60 * 1000,
-    //   AppCache: false,
-    //   ServiceWorker: {
-    //     events: true,
-    //   },
-    // }),
+    new OfflinePlugin({
+      autoUpdate: 5 * 60 * 1000,
+      AppCache: false,
+      ServiceWorker: {
+        events: true,
+      },
+    }),
 
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',

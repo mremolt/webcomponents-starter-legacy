@@ -5,6 +5,8 @@ import { WithTemplate } from './utils/template.mixin';
 import { store } from './backend/store';
 import { property } from './utils/decorators';
 
+import { setupRouteActionListener } from './routes';
+
 export class AppElement extends WithTemplate(HTMLElement) {
   @property() private page: HTMLElement;
 
@@ -17,6 +19,8 @@ export class AppElement extends WithTemplate(HTMLElement) {
         this.page = new Element();
       }
     });
+
+    setupRouteActionListener(store);
   }
 
   public render(): TemplateResult {

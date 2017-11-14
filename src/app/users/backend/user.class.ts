@@ -16,4 +16,11 @@ export class User extends Model<IUser> {
   get name(): string {
     return `${this.firstname} ${this.lastname}`;
   }
+
+  constructor(params?: IUser) {
+    if (!params) {
+      params = { id: 0, firstname: '', lastname: '', email: '' };
+    }
+    super(params);
+  }
 }

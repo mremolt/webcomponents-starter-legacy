@@ -6,9 +6,11 @@ import { WithTemplate } from '../utils/template.mixin';
 import { property } from '../utils/decorators';
 import { store } from '../backend/store';
 
-import { fetchUsers } from './backend/users.actions';
+import { fetchUsers, deleteUser } from './backend/users.actions';
 import { usersSelector } from './backend/users.selectors';
 import { User } from './backend/user.class';
+
+import './user-show.element';
 
 export class UsersPageElement extends WithTemplate(HTMLElement) {
   @property() private users: User[] = [];
@@ -34,10 +36,18 @@ export class UsersPageElement extends WithTemplate(HTMLElement) {
 
       <ul class="list-group">
         ${this.users.map(
-          user => html`<my-user-show user="${user}"></my-user-show>`
+          user =>
+            html`<my-user-show user="${user}" on-delete="${this
+              .delete}"></my-user-show>`
         )}
       </ul>
+
+      <a href="/users/new">Create new User</a>
     `;
+  }
+
+  public delete(e: CustomEvent) {
+    store.dispatch(deleteUser(e.detail));
   }
 }
 
