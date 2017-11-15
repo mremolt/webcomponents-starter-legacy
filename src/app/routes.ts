@@ -27,31 +27,31 @@ export function setupRoutes(store: Store<IState>): void {
   page.base('/');
 
   page('/', async context => {
-    const m = await import(/* webpackChunkName: "home-page.element" */ './home/home-page.element');
+    const m = await import(/* webpackChunkName: "home-page.element" */ './home');
     renderAsync(m.HomePageElement, context, store);
   });
   // page('/', renderPage(HomePageElement));
 
   page('users', async context => {
-    const m = await import(/* webpackChunkName: "users-page.element" */ './users/users-page.element');
+    const m = await import(/* webpackChunkName: "users-page.element" */ './users');
     renderAsync(m.UsersPageElement, context, store);
   });
   // page('users', renderPage(UsersPageElement));
 
   page('users/new', async context => {
-    const m = await import(/* webpackChunkName: "user-new-page.element" */ './users/user-new-page.element');
+    const m = await import(/* webpackChunkName: "user-new-page.element" */ './users');
     renderAsync(m.UserNewPageElement, context, store);
   });
   // page('users/new', renderPage(UserNewPageElement));
 
   page('users/:id', async context => {
-    const m = await import(/* webpackChunkName: "user-detail-page.element" */ './users/user-detail-page');
+    const m = await import(/* webpackChunkName: "user-detail-page.element" */ './users');
     renderAsync(m.UserDetailPageElement, context, store);
   });
   // page('users/:id', renderPage(UserDetailPageElement));
 
   page('users/:id/edit', async context => {
-    const m = await import(/* webpackChunkName: "user-edit-page.element" */ './users/user-edit-page.element');
+    const m = await import(/* webpackChunkName: "user-edit-page.element" */ './users');
     renderAsync(m.UserEditPageElement, context, store);
   });
   // page('users/:id/edit', renderPage(UserEditPageElement));

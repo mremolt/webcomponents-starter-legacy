@@ -4,12 +4,9 @@ import set from 'ramda/src/set';
 import compose from 'ramda/src/compose';
 
 import {
-  USER_FETCH_FULFILLED,
-  USER_FETCH_PENDING,
-  USER_UPDATE_PENDING,
-  USER_UPDATE_FULFILLED,
-  USER_CREATE_PENDING,
-  USER_CREATE_FULFILLED,
+  userFetchActions,
+  userCreateActions,
+  userUpdateActions,
 } from './users.actions';
 import { IUser } from './user.class';
 
@@ -33,26 +30,26 @@ export function currentUserReducer(
   const entityPath = lensPath(['entity']);
 
   switch (action.type) {
-    case USER_FETCH_PENDING:
+    case userFetchActions.pending:
       return set(loadingPath, true, initialState) as ICurrentUserState;
 
-    case USER_FETCH_FULFILLED:
+    case userFetchActions.fulfilled:
       return compose(set(loadingPath, false), set(entityPath, action.payload))(
         state
       ) as ICurrentUserState;
 
-    case USER_CREATE_PENDING:
+    case userCreateActions.pending:
       return set(loadingPath, true, state) as ICurrentUserState;
 
-    case USER_CREATE_FULFILLED:
+    case userCreateActions.fulfilled:
       return compose(set(loadingPath, false), set(entityPath, action.payload))(
         state
       ) as ICurrentUserState;
 
-    case USER_UPDATE_PENDING:
+    case userUpdateActions.pending:
       return set(loadingPath, true, state) as ICurrentUserState;
 
-    case USER_UPDATE_FULFILLED:
+    case userUpdateActions.fulfilled:
       return compose(set(loadingPath, false), set(entityPath, action.payload))(
         state
       ) as ICurrentUserState;

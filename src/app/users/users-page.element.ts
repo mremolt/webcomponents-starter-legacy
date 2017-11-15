@@ -1,5 +1,6 @@
 import { TemplateResult } from 'lit-html';
 import { html } from 'lit-html/lib/lit-extended';
+import { repeat } from 'lit-html/lib/repeat';
 import { Unsubscribe } from 'redux';
 
 import { WithTemplate } from '../utils/template.mixin';
@@ -11,6 +12,12 @@ import { usersSelector } from './backend/users.selectors';
 import { User } from './backend/user.class';
 
 import './user-show.element';
+import { t } from 'i18next';
+
+// const shuffleArray = (arr: any[]) => {
+//   arr = [...arr];
+//   return arr.sort(() => Math.random() - 0.5);
+// };
 
 export class UsersPageElement extends WithTemplate(HTMLElement) {
   @property() private users: User[] = [];
@@ -21,6 +28,22 @@ export class UsersPageElement extends WithTemplate(HTMLElement) {
 
     this.unsubscribe = store.subscribe(() => {
       this.users = usersSelector(store.getState());
+      // this.users = [
+      //   ...usersSelector(store.getState()),
+      //   ...usersSelector(store.getState()),
+      //   ...usersSelector(store.getState()),
+      //   ...usersSelector(store.getState()),
+      //   ...usersSelector(store.getState()),
+      //   ...usersSelector(store.getState()),
+      //   ...usersSelector(store.getState()),
+      //   ...usersSelector(store.getState()),
+      //   ...usersSelector(store.getState()),
+      //   ...usersSelector(store.getState()),
+      // ];
+
+      // setInterval(() => {
+      //   this.users = shuffleArray(this.users);
+      // }, 150);
     });
 
     store.dispatch(fetchUsers());
@@ -32,10 +55,11 @@ export class UsersPageElement extends WithTemplate(HTMLElement) {
 
   public render(): TemplateResult {
     return html`
-      <h2>Users Page</h2>
+      <h2>${t('users:list_page_title')}</h2>
 
       <ul class="list-group">
-        ${this.users.map(
+        ${repeat(
+          this.users,
           user =>
             html`<my-user-show user="${user}" on-delete="${this
               .delete}"></my-user-show>`

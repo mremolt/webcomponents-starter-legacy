@@ -1,61 +1,48 @@
 import { AnyAction } from 'redux';
-import axios from 'axios';
 import { environment } from '../../../environment';
 import { IUser } from './user.class';
 import { Dispatch } from 'redux';
 import { ROUTE_UPDATE } from '../../constants';
 import { ThunkAction } from 'redux-thunk';
 import { IState } from '../../backend/root.reducer';
+import {
+  httpGet,
+  httpPost,
+  httpPut,
+  httpDelete,
+  generateAsyncActionNames,
+} from '../../utils/rest';
 
 export const USERS_BASE_URL: string = `${environment.apiUrl}/users`;
 
-export const USERS_FETCH = 'USERS_FETCH';
-export const USERS_FETCH_PENDING = 'USERS_FETCH_PENDING';
-export const USERS_FETCH_FULFILLED = 'USERS_FETCH_FULFILLED';
-
-export const USER_FETCH = 'USER_FETCH';
-export const USER_FETCH_PENDING = 'USER_FETCH_PENDING';
-export const USER_FETCH_FULFILLED = 'USER_FETCH_FULFILLED';
-
-export const USER_CREATE = 'USER_CREATE';
-export const USER_CREATE_PENDING = 'USER_CREATE_PENDING';
-export const USER_CREATE_FULFILLED = 'USER_CREATE_FULFILLED';
-
-export const USER_UPDATE = 'USER_UPDATE';
-export const USER_UPDATE_PENDING = 'USER_UPDATE_PENDING';
-export const USER_UPDATE_FULFILLED = 'USER_UPDATE_FULFILLED';
-
-export const USER_DELETE = 'USER_DELETE';
-export const USER_DELETE_PENDING = 'USER_DELETE_PENDING';
-export const USER_DELETE_FULFILLED = 'USER_DELETE_FULFILLED';
+export const usersFetchActions = generateAsyncActionNames('USERS_FETCH');
+export const userFetchActions = generateAsyncActionNames('USER_FETCH');
+export const userCreateActions = generateAsyncActionNames('USER_CREATE');
+export const userUpdateActions = generateAsyncActionNames('USER_UPDATE');
+export const userDeleteActions = generateAsyncActionNames('USER_DELETE');
 
 export function fetchUsers(): AnyAction {
   return {
-    type: USERS_FETCH,
-    payload: axios.get(USERS_BASE_URL).then(response => {
-      return response.data;
-    }),
+    type: usersFetchActions.base,
+    payload: httpGet(USERS_BASE_URL),
   };
 }
 
 export function fetchUser(id: string): AnyAction {
   return {
-    type: USER_FETCH,
-    payload: axios.get(`${USERS_BASE_URL}/${id}`).then(response => {
-      return response.data;
+    type: userFetchActions.base,
+    payload: fetch(`${USERS_BASE_URL}/${id}`).then(response => {
+      return response.json();
     }),
   };
 }
 
 export function createUser(user: IUser): ThunkAction<any, IState, any> {
   return (dispatch: Dispatch<IState>) => {
-    const promise = axios.post(USERS_BASE_URL, user).then(response => {
-      return response.data;
-    });
-
+    const promise = httpPost(USERS_BASE_URL, user);
     dispatch({
-      type: USER_CREATE,
-      payload: promise,
+      type: userCreateActions.base,
+      payload: httpPost(USERS_BASE_URL, user),
     });
 
     promise.then(() => {
@@ -66,18 +53,14 @@ export function createUser(user: IUser): ThunkAction<any, IState, any> {
 
 export function updateUser(user: IUser): AnyAction {
   return {
-    type: USER_UPDATE,
-    payload: axios.put(`${USERS_BASE_URL}/${user.id}`, user).then(response => {
-      return response.data;
-    }),
+    type: userUpdateActions.base,
+    payload: httpPut(`${USERS_BASE_URL}/${user.id}`, user),
   };
 }
 
 export function deleteUser(id: string): AnyAction {
   return {
-    type: USER_DELETE,
-    payload: axios.delete(`${USERS_BASE_URL}/${id}`).then(response => {
-      return id;
-    }),
+    type: userDeleteActions.base,
+    payload: httpDelete(`${USERS_BASE_URL}/${id}`).then(() => id),
   };
 }

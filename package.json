@@ -15,9 +15,10 @@
   "license": "ISC",
   "dependencies": {
     "@webcomponents/custom-elements": "^1.0.4",
-    "axios": "^0.17.1",
     "bootstrap": "^4.0.0-beta.2",
     "cssnano": "^3.10.0",
+    "i18next": "^10.0.7",
+    "i18next-browser-languagedetector": "^2.1.0",
     "lit-html": "^0.7.1",
     "page": "^1.7.1",
     "ramda": "^0.25.0",
@@ -30,6 +31,8 @@
     "validate.js": "^0.12.0"
   },
   "devDependencies": {
+    "@types/i18next": "^8.4.2",
+    "@types/i18next-browser-languagedetector": "^2.0.1",
     "@types/node": "^8.0.51",
     "@types/page": "^1.5.32",
     "@types/ramda": "github:types/npm-ramda#dist",

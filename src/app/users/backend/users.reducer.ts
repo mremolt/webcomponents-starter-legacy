@@ -1,9 +1,5 @@
 import { AnyAction } from 'redux';
-import {
-  USERS_FETCH_FULFILLED,
-  USERS_FETCH_PENDING,
-  USER_DELETE_FULFILLED,
-} from './users.actions';
+import { usersFetchActions, userDeleteActions } from './users.actions';
 import lensPath from 'ramda/src/lensPath';
 import set from 'ramda/src/set';
 import compose from 'ramda/src/compose';
@@ -29,16 +25,16 @@ export function usersReducer(
   const entitiesPath = lensPath(['entities']);
 
   switch (action.type) {
-    case USERS_FETCH_PENDING:
+    case usersFetchActions.pending:
       return set(loadingPath, true, initialState) as IUsersState;
 
-    case USERS_FETCH_FULFILLED:
+    case usersFetchActions.fulfilled:
       return compose(
         set(loadingPath, false),
         set(entitiesPath, action.payload)
       )(state) as IUsersState;
 
-    case USER_DELETE_FULFILLED:
+    case userDeleteActions.fulfilled:
       const entities = state.entities.filter(e => e.id !== action.payload);
       return { ...state, entities };
   }

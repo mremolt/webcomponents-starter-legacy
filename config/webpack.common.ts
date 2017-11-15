@@ -3,7 +3,7 @@ import { root } from './helpers';
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-// const CopyWebpackPlugin = require('copy-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 
 const TS_VERSION = require('typescript').version;
@@ -102,20 +102,20 @@ export default function(options: any): any {
         TS_VERSION: JSON.stringify(TS_VERSION),
       }),
 
-      // new CopyWebpackPlugin([
-      //   {
-      //     from: 'src/assets/favicon.ico',
-      //     to: 'assets',
-      //   },
-      //   {
-      //     from: 'src/assets/appicon.png',
-      //     to: 'assets',
-      //   },
-      //   {
-      //     from: 'src/manifest.json',
-      //     to: '',
-      //   },
-      // ]),
+      new CopyWebpackPlugin([
+        {
+          from: 'src/assets/favicon.ico',
+          to: 'assets',
+        },
+        {
+          from: 'src/assets/appicon.png',
+          to: 'assets',
+        },
+        {
+          from: 'src/manifest.json',
+          to: '',
+        },
+      ]),
 
       extractSASS,
     ],
