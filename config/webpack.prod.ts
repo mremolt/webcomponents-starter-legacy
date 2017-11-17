@@ -7,6 +7,8 @@ import commonConfig from './webpack.common';
 const Uglify = require('uglifyjs-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
+const BrotliPlugin = require('brotli-webpack-plugin');
+
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin;
 
@@ -44,6 +46,8 @@ export default webpackMerge(commonConfig(options), {
 
   plugins: [
     new webpack.optimize.ModuleConcatenationPlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(true),
+    new webpack.optimize.AggressiveMergingPlugin(),
 
     new Uglify({
       sourceMap: true,
@@ -57,6 +61,12 @@ export default webpackMerge(commonConfig(options), {
     new CompressionPlugin({
       regExp: /\.css$|\.html$|\.js$|\.map$/,
       threshold: 2 * 1024,
+    }),
+    new BrotliPlugin({
+      asset: '[path].br[query]',
+      test: /\.(js|css|html|svg|map)$/,
+      threshold: 1024,
+      minRatio: 0.8,
     }),
 
     new OfflinePlugin({

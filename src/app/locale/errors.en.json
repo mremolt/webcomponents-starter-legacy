@@ -1,0 +1,8 @@
+{
+  "valueMissing": "Required field",
+  "invalidFirstName":
+    "The firstname must either be Ford or contain at least 6 chars",
+  "invalidAero": "the Domain mus be .aero",
+  "typeMismatch": "The value in invalid for thie field type",
+  "tooShort": "too short"
+}

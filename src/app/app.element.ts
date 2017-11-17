@@ -1,6 +1,5 @@
 import { TemplateResult } from 'lit-html';
 import { html } from 'lit-html/lib/lit-extended';
-import { on as i18nEvent } from 'i18next';
 
 import { WithTemplate } from './utils/template.mixin';
 import { store } from './backend/store';
@@ -9,6 +8,7 @@ import { property } from './utils/decorators';
 import { setupRouteActionListener } from './routes';
 
 import './header';
+import { translator } from './translator';
 
 export class AppElement extends WithTemplate(HTMLElement) {
   @property() private page: HTMLElement;
@@ -23,7 +23,7 @@ export class AppElement extends WithTemplate(HTMLElement) {
       }
     });
 
-    i18nEvent('languageChanged', () => {
+    translator.onLocaleChange(() => {
       this.updateView();
     });
 

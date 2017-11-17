@@ -1,4 +1,4 @@
-// import '@webcomponents/custom-elements';
+import '@webcomponents/custom-elements';
 
 import { setupRoutes } from './app/routes';
 import { store } from './app/backend/store';

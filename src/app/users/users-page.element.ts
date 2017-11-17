@@ -6,13 +6,13 @@ import { Unsubscribe } from 'redux';
 import { WithTemplate } from '../utils/template.mixin';
 import { property } from '../utils/decorators';
 import { store } from '../backend/store';
+import { t } from '../translator';
 
 import { fetchUsers, deleteUser } from './backend/users.actions';
 import { usersSelector } from './backend/users.selectors';
 import { User } from './backend/user.class';
 
 import './user-show.element';
-import { t } from 'i18next';
 
 // const shuffleArray = (arr: any[]) => {
 //   arr = [...arr];

@@ -1,10 +1,9 @@
-import i18next from 'i18next';
-
+import { translator } from '../translator';
 import de from './locale/de.json';
 import en from './locale/en.json';
 
-i18next.addResourceBundle('de', 'users', de);
-i18next.addResourceBundle('en', 'users', en);
+translator.addTranslation('de', de, 'users');
+translator.addTranslation('en', en, 'users');
 
 export * from './user-detail-page';
 export * from './user-edit-page.element';

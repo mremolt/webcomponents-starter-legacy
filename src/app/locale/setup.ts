@@ -1,12 +1,11 @@
-import i18next from 'i18next';
-import LngDetector from 'i18next-browser-languagedetector';
+import { translator } from '../translator';
 
 import de from './de.json';
 import en from './en.json';
+import errorsDe from './errors.de.json';
+import errorsEn from './errors.en.json';
 
-i18next.use(LngDetector).init({
-  resources: {
-    de: { translation: de },
-    en: { translation: en },
-  },
-});
+translator.addTranslation('de', de);
+translator.addTranslation('en', en);
+translator.addTranslation('de', errorsDe, 'errors');
+translator.addTranslation('en', errorsEn, 'errors');

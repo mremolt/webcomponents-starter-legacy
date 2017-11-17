@@ -1,0 +1,8 @@
+{
+  "valueMissing": "Pflichtfeld",
+  "invalidFirstName":
+    "Der Vorname muss entweder Ford lauten oder mindestens 6 Zeichen lang sein",
+  "invalidAero": "Die Domäne muss .aero lauten",
+  "typeMismatch": "Das ist kein gültiger Wert für dieses Feld.",
+  "tooShort": "zu kurz"
+}

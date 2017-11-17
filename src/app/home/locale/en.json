@@ -1,4 +1,4 @@
 {
   "title": "Home Page",
-  "hello": "Hello {{ who }}"
+  "hello": "Hello {who}"
 }

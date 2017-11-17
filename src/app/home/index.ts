@@ -1,9 +1,8 @@
-import i18next from 'i18next';
-
+import { translator } from '../translator';
 import de from './locale/de.json';
 import en from './locale/en.json';
 
-i18next.addResourceBundle('de', 'home', de);
-i18next.addResourceBundle('en', 'home', en);
+translator.addTranslation('de', de, 'home');
+translator.addTranslation('en', en, 'home');
 
 export * from './home-page.element';

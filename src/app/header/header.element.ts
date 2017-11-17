@@ -1,13 +1,13 @@
 import { TemplateResult } from 'lit-html';
 import { html } from 'lit-html/lib/lit-extended';
-import { changeLanguage, t } from 'i18next';
 
+import { translator, t } from '../translator';
 import { WithTemplate } from '../utils/template.mixin';
 
 export class HeaderElement extends WithTemplate(HTMLElement) {
   public switchLanguage(e: Event, locale: string) {
     e.preventDefault();
-    changeLanguage(locale);
+    translator.locale = locale;
     this.updateView();
   }
 

@@ -1,18 +1,30 @@
 import { TemplateResult } from 'lit-html';
 import { html } from 'lit-html/lib/lit-extended';
-import * as validate from 'validate.js';
 
 import { IUser, User } from './backend/user.class';
 import { property } from '../utils/decorators';
 import { WithTemplate } from '../utils/template.mixin';
+import { WithForm } from '../utils/form.mixin';
 
-export class UserFormElement extends WithTemplate(HTMLElement) {
-  @property() private formErrors: { [key: string]: string[] | null } = {};
-  private formData: IUser = {} as IUser;
-  private constraints = {
-    firstname: { presence: { allowEmpty: false }, length: { minimum: 6 } },
-    lastname: { presence: { allowEmpty: false } },
-    email: { presence: { allowEmpty: false }, email: true },
+function validateFirstname(input: HTMLInputElement): string | null {
+  return input.value === 'Ford' || input.value.length >= 6
+    ? null
+    : 'invalidFirstName';
+}
+
+function validateAero(input: HTMLInputElement): string | null {
+  return input.value.endsWith('.aero') ? null : 'invalidAero';
+}
+
+export class UserFormElement extends WithForm(WithTemplate(HTMLElement)) {
+  @property() public formErrors = {};
+  public formData: IUser = {} as IUser;
+
+  public constraints: {
+    [key: string]: Array<(input: HTMLInputElement) => string | null>;
+  } = {
+    firstname: [validateFirstname],
+    email: [validateAero],
   };
 
   // tslint:disable-next-line:variable-name
@@ -27,54 +39,32 @@ export class UserFormElement extends WithTemplate(HTMLElement) {
     this.updateView();
   }
 
-  get form(): HTMLFormElement {
-    return this.querySelector('form') as HTMLFormElement;
-  }
-
-  get invalid(): boolean {
-    return !!validate(this.formData, this.constraints);
-  }
-
   public save(e: Event) {
     e.preventDefault();
-    const event = new CustomEvent('save', { detail: this.formData });
-    this.dispatchEvent(event);
-  }
-
-  public hasErrors(key: string): boolean {
-    return !!(this.formErrors && this.formErrors[key]);
-  }
-
-  public getErrors(key: string): string[] {
-    return (this.formErrors && this.formErrors[key]) || [];
-  }
-
-  public renderError(error: string): TemplateResult {
-    return html`<div class="invalid-feedback">${error}</div>`;
-  }
-
-  public renderErrorClass(key: string): string {
-    return this.hasErrors(key)
-      ? 'form-control is-invalid'
-      : 'form-control is-valid';
+    this.validateForm();
+    if (this.valid) {
+      const event = new CustomEvent('save', { detail: this.formData });
+      this.dispatchEvent(event);
+    }
   }
 
   public render(): TemplateResult {
     return html`
-      <form novalidate on-change="${(e: any) =>
+      <form novalidate on-input="${(e: any) =>
         this.updateForm(e)}" on-submit="${(e: Event) => this.save(e)}">
         <div class="form-group row">
           <label for="inputFirstname" class="col-sm-2 col-form-label">Firstname</label>
           <div class="col-sm-10">
             <input
               type="text"
-              class$="${this.renderErrorClass('firstname')}"
+              class="form-control"
               id="inputFirstname"
               placeholder="Firstname"
               name="firstname"
-              value$="${this.formData.firstname}">
+              value$="${this.formData.firstname}"
+              required>
 
-            ${this.getErrors('firstname').map(this.renderError)}
+              ${this.renderErrors('firstname')}
           </div>
         </div>
 
@@ -83,59 +73,38 @@ export class UserFormElement extends WithTemplate(HTMLElement) {
           <div class="col-sm-10">
             <input
               type="text"
-              class$="${this.renderErrorClass('lastname')}"
+              class="form-control"
               id="inputLastname"
               placeholder="Lastname"
               name="lastname"
-              value$="${this.formData.lastname}">
+              value$="${this.formData.lastname}"
+              required
+              minlength="6">
 
-            ${this.getErrors('lastname').map(this.renderError)}
+              ${this.renderErrors('lastname')}
           </div>
-
         </div>
 
         <div class="form-group row">
           <label for="inputEmail" class="col-sm-2 col-form-label">E-Mail</label>
           <div class="col-sm-10">
             <input
-              type="text"
-              class$="${this.renderErrorClass('email')}"
+              type="email"
+              class="form-control"
               id="inputEmail"
               placeholder="E-Mail"
               name="email"
-              value$="${this.formData.email}">
+              value$="${this.formData.email}"
+              required>
 
-            ${this.getErrors('email').map(this.renderError)}
+              ${this.renderErrors('email')}
           </div>
         </div>
 
         <input type="submit" value="Save" class="btn btn-primary"
-          disabled="${this.invalid}">
+          disabled="${false}">
       </form>
-
     `;
-  }
-
-  protected updateForm(e: any) {
-    const input = e.target as HTMLInputElement;
-    this.formData = Object.assign({}, this.formData, {
-      [input.name]: input.value,
-    });
-    const formErrors = validate(this.formData, this.constraints);
-
-    if (!formErrors) {
-      this.formErrors = {};
-    } else if (formErrors[input.name]) {
-      this.formErrors = {
-        ...this.formErrors,
-        [input.name]: formErrors[input.name],
-      };
-    } else {
-      this.formErrors = {
-        ...this.formErrors,
-        [input.name]: null,
-      };
-    }
   }
 }
 

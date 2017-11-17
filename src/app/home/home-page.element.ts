@@ -1,6 +1,6 @@
 import { TemplateResult } from 'lit-html';
 import { html } from 'lit-html/lib/lit-extended';
-import { t } from 'i18next';
+import { t } from '../translator';
 
 import { WithTemplate } from '../utils/template.mixin';
 
