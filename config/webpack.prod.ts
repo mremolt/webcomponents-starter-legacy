@@ -72,6 +72,7 @@ export default webpackMerge(commonConfig(options), {
     new OfflinePlugin({
       autoUpdate: 5 * 60 * 1000,
       AppCache: false,
+      externals: ['/', 'users'],
       ServiceWorker: {
         events: true,
       },

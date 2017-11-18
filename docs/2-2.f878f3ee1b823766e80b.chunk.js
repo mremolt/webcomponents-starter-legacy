@@ -1,0 +1,2 @@
+webpackJsonp([2],{"./src/app/pages/foo-bar.element.ts":function(e,t,s){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var n=s("./src/app/utils/template.mixin.ts"),a=s("./node_modules/lit-html/lib/lit-extended.js");class l extends(Object(n.a)(HTMLElement)){render(){return a["a"]`<span>FOO BAR BAZ!!!</span>`}}t.FooBarElement=l,customElements.define("my-foo-bar",l)}});
+//# sourceMappingURL=2-2.f878f3ee1b823766e80b.chunk.js.map

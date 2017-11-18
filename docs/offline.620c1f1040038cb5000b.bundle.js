@@ -1,0 +1,2 @@
+webpackJsonp([4],{"./src/service-worker.ts":function(e,o,n){"use strict";Object.defineProperty(o,"__esModule",{value:!0});var r=n("./node_modules/offline-plugin/runtime.js");n.n(r),"serviceWorker"in window.navigator&&r.install({onUpdateReady(){console.log("SW Event:","onUpdateReady"),r.applyUpdate()},onUpdated(){window.location.reload()}})}},["./src/service-worker.ts"]);
+//# sourceMappingURL=offline.620c1f1040038cb5000b.bundle.js.map
