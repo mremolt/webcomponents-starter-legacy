@@ -1,6 +1,6 @@
 {
-  "short_name": "DCSFoodOrder",
-  "name": "DCS Food Order",
+  "short_name": "WebcomponentsTest",
+  "name": "Webcomponents Test Application",
   "icons": [
     {
       "src": "assets/home-1.png",

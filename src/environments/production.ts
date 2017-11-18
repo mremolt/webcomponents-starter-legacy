@@ -1,7 +1,8 @@
 import { GenericStoreEnhancer } from 'redux';
 
 export default class ProductionEnvironment {
-  public apiUrl = 'http://localhost:3001';
+  public apiUrl = 'https://food-order-api.herokuapp.com';
+
   public throwOnSchemaError = true;
   public autoUpdate: string = 'confirm';
   public updateMessage = 'Updates available, reload page now?';

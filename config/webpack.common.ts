@@ -108,7 +108,7 @@ export default function(options: any): any {
           to: 'assets',
         },
         {
-          from: 'src/assets/appicon.png',
+          from: 'src/assets/home-1.png',
           to: 'assets',
         },
         {
