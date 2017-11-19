@@ -55,7 +55,7 @@ export function setupRouteActionListener(store: Store<IState>) {
     const route = routeSelector(store.getState());
     setTimeout(() => {
       if (route !== window.location.pathname) {
-        page.redirect(route);
+        // page.redirect(route);
       }
     });
   });
