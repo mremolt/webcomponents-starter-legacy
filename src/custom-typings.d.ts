@@ -16,4 +16,5 @@ declare module '*.json' {
   export default value;
 }
 
-declare module 'es6-template-strings';
+declare module 'redux-persist';
+declare module 'redux-persist/es/storage';

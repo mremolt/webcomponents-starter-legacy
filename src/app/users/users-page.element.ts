@@ -13,7 +13,6 @@ import { User } from './backend/user.class';
 import { IState } from '../backend/root.reducer';
 
 import './user-show.element';
-import { setTimeout } from 'timers';
 
 export const UsersPage: IWithStateStatic<IState> = WithState(
   { users: usersSelector },
