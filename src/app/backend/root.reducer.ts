@@ -1,4 +1,6 @@
-import { Reducer, AnyAction, combineReducers } from 'redux';
+import { Reducer, AnyAction } from 'redux';
+import { persistCombineReducers } from 'redux-persist';
+import storage from 'redux-persist/es/storage';
 
 import { usersReducer, IUsersState } from '../users/backend/users.reducer';
 import { LOCATION_CHANGE, ROUTE_UPDATE } from '../constants';
@@ -34,7 +36,12 @@ export interface IState {
   currentUser: ICurrentUserState;
 }
 
-export const rootReducer: Reducer<any> = combineReducers({
+const config = {
+  key: 'root',
+  storage,
+};
+
+export const rootReducer: Reducer<any> = persistCombineReducers(config, {
   routes: routesReducer,
   users: usersReducer,
   currentUser: currentUserReducer,

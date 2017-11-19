@@ -1,56 +1,37 @@
 import { TemplateResult } from 'lit-html';
 import { html } from 'lit-html/lib/lit-extended';
 import { repeat } from 'lit-html/lib/repeat';
-import { Unsubscribe } from 'redux';
 
 import { WithTemplate } from '../utils/template.mixin';
+import { IWithStateStatic, WithState } from '../utils/store.mixin';
 import { property } from '../utils/decorators';
-import { store } from '../backend/store';
 import { t } from '../translator';
 
 import { fetchUsers, deleteUser } from './backend/users.actions';
 import { usersSelector } from './backend/users.selectors';
 import { User } from './backend/user.class';
+import { IState } from '../backend/root.reducer';
 
 import './user-show.element';
+import { setTimeout } from 'timers';
 
-// const shuffleArray = (arr: any[]) => {
-//   arr = [...arr];
-//   return arr.sort(() => Math.random() - 0.5);
-// };
+export const UsersPage: IWithStateStatic<IState> = WithState(
+  { users: usersSelector },
+  WithTemplate(HTMLElement)
+);
 
-export class UsersPageElement extends WithTemplate(HTMLElement) {
+export class UsersPageElement extends UsersPage {
   @property() private users: User[] = [];
-  private unsubscribe: Unsubscribe;
+
+  constructor() {
+    super();
+
+    this.delete = this.delete.bind(this);
+  }
 
   public connectedCallback() {
     super.connectedCallback();
-
-    this.unsubscribe = store.subscribe(() => {
-      this.users = usersSelector(store.getState());
-      // this.users = [
-      //   ...usersSelector(store.getState()),
-      //   ...usersSelector(store.getState()),
-      //   ...usersSelector(store.getState()),
-      //   ...usersSelector(store.getState()),
-      //   ...usersSelector(store.getState()),
-      //   ...usersSelector(store.getState()),
-      //   ...usersSelector(store.getState()),
-      //   ...usersSelector(store.getState()),
-      //   ...usersSelector(store.getState()),
-      //   ...usersSelector(store.getState()),
-      // ];
-
-      // setInterval(() => {
-      //   this.users = shuffleArray(this.users);
-      // }, 150);
-    });
-
-    store.dispatch(fetchUsers());
-  }
-
-  public disconnectedCallback() {
-    this.unsubscribe();
+    this.dispatch(fetchUsers());
   }
 
   public render(): TemplateResult {
@@ -71,7 +52,7 @@ export class UsersPageElement extends WithTemplate(HTMLElement) {
   }
 
   public delete(e: CustomEvent) {
-    store.dispatch(deleteUser(e.detail));
+    this.dispatch(deleteUser(e.detail));
   }
 }
 

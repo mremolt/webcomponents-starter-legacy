@@ -14,7 +14,7 @@ export class HeaderElement extends WithTemplate(HTMLElement) {
   public render(): TemplateResult {
     return html`
       <div class="row">
-        <div class="col-sm">
+        <div class="col">
           <ul class="nav">
             <li class="nav-item">
               <a class="nav-link active" href="/">${t('header:nav_home')}</a>
@@ -31,7 +31,15 @@ export class HeaderElement extends WithTemplate(HTMLElement) {
               )}</a>
             </li>
 
-            <li class="nav-item">
+          </ul>
+        </div>
+      <!-- </div>
+
+      <div class="row"> -->
+        <div class="col align-self-end">
+          <ul class="nav">
+
+          <li class="nav-item">
               <a class="nav-link" href="#"
                 on-click="${(e: Event) => this.switchLanguage(e, 'de')}">
                 ${t('header:nav_de')}
@@ -45,7 +53,6 @@ export class HeaderElement extends WithTemplate(HTMLElement) {
               </a>
             </li>
           </ul>
-
         </div>
       </div>
     `;

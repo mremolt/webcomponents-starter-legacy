@@ -26,7 +26,7 @@ export class UserNewPageElement extends WithTemplate(HTMLElement) {
 
       <my-user-form user="${this.user}" on-save="${this.save}"></my-user-form>
 
-      <a href="/users/${this.user.id}" class="btn btn-default">back</a>
+      <a href="/users" class="btn btn-default">back</a>
     `;
   }
 }

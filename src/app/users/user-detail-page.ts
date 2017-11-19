@@ -1,19 +1,25 @@
 import { TemplateResult } from 'lit-html';
 import { html } from 'lit-html/lib/lit-extended';
-import { Unsubscribe, Store } from 'redux';
 
 import { WithTemplate } from '../utils/template.mixin';
 import { property } from '../utils/decorators';
-import { store } from '../backend/store';
 import { fetchUser } from './backend/users.actions';
 import { userSelector } from './backend/users.selectors';
 import { User } from './backend/user.class';
 import { routeParamsSelector } from '../backend/routes.selectors';
+import { WithState, IWithStateStatic } from '../utils/store.mixin';
 import { IState } from '../backend/root.reducer';
 
-export class UserDetailPageElement extends WithTemplate(HTMLElement) {
+export const UserDetailPage: IWithStateStatic<IState> = WithState(
+  {
+    user: userSelector,
+    userId: (state: IState) => routeParamsSelector(state).id,
+  },
+  WithTemplate(HTMLElement)
+);
+
+export class UserDetailPageElement extends UserDetailPage {
   @property() protected user: User = new User();
-  private unsubscribe: Unsubscribe;
 
   // tslint:disable-next-line:variable-name
   private _userId: string;
@@ -24,21 +30,8 @@ export class UserDetailPageElement extends WithTemplate(HTMLElement) {
   set userId(id: string) {
     if (id && id !== this._userId && id !== String(this.user.id)) {
       this._userId = id;
-      store.dispatch(fetchUser(id));
+      this.dispatch(fetchUser(id));
     }
-  }
-
-  public connectedCallback(): void {
-    super.connectedCallback();
-    this.stateToProps(store);
-
-    this.unsubscribe = store.subscribe(() => {
-      this.stateToProps(store);
-    });
-  }
-
-  public disconnectedCallback() {
-    this.unsubscribe();
   }
 
   public render(): TemplateResult {
@@ -54,12 +47,6 @@ export class UserDetailPageElement extends WithTemplate(HTMLElement) {
       <br>
       <a href="/users">back</a>
     `;
-  }
-
-  protected stateToProps(s: Store<IState>): void {
-    const state = s.getState();
-    this.user = userSelector(state);
-    this.userId = routeParamsSelector(state).id;
   }
 }
 

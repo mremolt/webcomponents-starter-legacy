@@ -1,5 +1,5 @@
 export function property() {
-  return (target: HTMLElement, key: string) => {
+  return (target: any, key: string) => {
     const result: any = {
       get() {
         return this['_' + key];

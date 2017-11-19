@@ -5,6 +5,8 @@ import {
   Middleware,
   compose,
 } from 'redux';
+import { persistStore } from 'redux-persist';
+
 import promiseMiddleware from 'redux-promise-middleware';
 import thunk from 'redux-thunk';
 
@@ -27,3 +29,5 @@ export const store: Store<IState> = createStore(
   {},
   composeEnhancers(applyMiddleware(...middleware))
 );
+
+export const persistor = persistStore(store);

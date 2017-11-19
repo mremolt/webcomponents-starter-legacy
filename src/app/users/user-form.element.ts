@@ -1,10 +1,10 @@
 import { TemplateResult } from 'lit-html';
 import { html } from 'lit-html/lib/lit-extended';
+import { repeat } from 'lit-html/lib/repeat';
 
-import { IUser, User } from './backend/user.class';
-import { property } from '../utils/decorators';
+import { User } from './backend/user.class';
 import { WithTemplate } from '../utils/template.mixin';
-import { WithForm } from '../utils/form.mixin';
+import { FormValidator } from '../utils/form-validator.class';
 
 function validateFirstname(input: HTMLInputElement): string | null {
   return input.value === 'Ford' || input.value.length >= 6
@@ -16,42 +16,66 @@ function validateAero(input: HTMLInputElement): string | null {
   return input.value.endsWith('.aero') ? null : 'invalidAero';
 }
 
-export class UserFormElement extends WithForm(WithTemplate(HTMLElement)) {
-  @property() public formErrors = {};
-  public formData: IUser = {} as IUser;
-
-  public constraints: {
-    [key: string]: Array<(input: HTMLInputElement) => string | null>;
-  } = {
-    firstname: [validateFirstname],
-    email: [validateAero],
-  };
-
+export class UserFormElement extends WithTemplate(HTMLElement) {
   // tslint:disable-next-line:variable-name
   private _user: User;
+
+  private formValidator: FormValidator;
+
+  get form(): HTMLFormElement {
+    return this.querySelector('form') as HTMLFormElement;
+  }
 
   get user(): User {
     return this._user;
   }
   set user(user: User) {
     this._user = user;
-    this.formData = this.user.rawData();
+    this.formValidator.formData = this.user.rawData();
     this.updateView();
+  }
+
+  constructor() {
+    super();
+
+    this.formValidator = new FormValidator({
+      firstname: [validateFirstname],
+      email: [validateAero],
+    });
+    this.formValidator.subscribeToErrors(() => {
+      this.updateView();
+    });
   }
 
   public save(e: Event) {
     e.preventDefault();
-    this.validateForm();
-    if (this.valid) {
-      const event = new CustomEvent('save', { detail: this.formData });
+    this.formValidator.validateForm();
+
+    if (this.formValidator.valid) {
+      const event = new CustomEvent('save', {
+        detail: this.formValidator.formData,
+      });
       this.dispatchEvent(event);
     }
+  }
+
+  public onViewInit() {
+    this.formValidator.form = this.form;
+  }
+
+  public renderErrors(key: string): TemplateResult {
+    const errors = this.formValidator.getErrors(key);
+    return html`${repeat(
+      errors,
+      error => html`<div class="invalid-feedback">${error}</div>`
+    )}`;
   }
 
   public render(): TemplateResult {
     return html`
       <form novalidate on-input="${(e: any) =>
-        this.updateForm(e)}" on-submit="${(e: Event) => this.save(e)}">
+        this.formValidator.updateForm(e)}" on-submit="${(e: Event) =>
+      this.save(e)}">
         <div class="form-group row">
           <label for="inputFirstname" class="col-sm-2 col-form-label">Firstname</label>
           <div class="col-sm-10">
@@ -61,7 +85,7 @@ export class UserFormElement extends WithForm(WithTemplate(HTMLElement)) {
               id="inputFirstname"
               placeholder="Firstname"
               name="firstname"
-              value$="${this.formData.firstname}"
+              value$="${this.formValidator.formData.firstname}"
               required>
 
               ${this.renderErrors('firstname')}
@@ -77,7 +101,7 @@ export class UserFormElement extends WithForm(WithTemplate(HTMLElement)) {
               id="inputLastname"
               placeholder="Lastname"
               name="lastname"
-              value$="${this.formData.lastname}"
+              value$="${this.formValidator.formData.lastname}"
               required
               minlength="6">
 
@@ -94,7 +118,7 @@ export class UserFormElement extends WithForm(WithTemplate(HTMLElement)) {
               id="inputEmail"
               placeholder="E-Mail"
               name="email"
-              value$="${this.formData.email}"
+              value$="${this.formValidator.formData.email}"
               required>
 
               ${this.renderErrors('email')}
