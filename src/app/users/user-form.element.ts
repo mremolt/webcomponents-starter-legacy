@@ -129,8 +129,6 @@ export class UserFormElement extends WithTemplate(HTMLElement) {
 
         <input type="submit" value="Save" class="btn btn-primary"
           disabled="${this.userLoading}">
-
-        ${this.userLoading}
       </form>
     `;
   }
