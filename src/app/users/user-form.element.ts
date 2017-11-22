@@ -5,6 +5,7 @@ import { repeat } from 'lit-html/lib/repeat';
 import { User } from './backend/user.class';
 import { WithTemplate } from '../utils/template.mixin';
 import { FormValidator } from '../utils/form-validator.class';
+import { property } from '../utils/decorators';
 
 function validateFirstname(input: HTMLInputElement): string | null {
   return input.value === 'Ford' || input.value.length >= 6
@@ -17,6 +18,7 @@ function validateAero(input: HTMLInputElement): string | null {
 }
 
 export class UserFormElement extends WithTemplate(HTMLElement) {
+  @property() private userLoading: boolean;
   // tslint:disable-next-line:variable-name
   private _user: User;
 
@@ -126,7 +128,9 @@ export class UserFormElement extends WithTemplate(HTMLElement) {
         </div>
 
         <input type="submit" value="Save" class="btn btn-primary"
-          disabled="${false}">
+          disabled="${this.userLoading}">
+
+        ${this.userLoading}
       </form>
     `;
   }

@@ -3,13 +3,25 @@ import { html } from 'lit-html/lib/lit-extended';
 
 import { store } from '../backend/store';
 import { createUser } from './backend/users.actions';
-import { WithTemplate } from '../utils/template.mixin';
 import { User } from './backend/user.class';
+import { WithTemplate } from '../utils/template.mixin';
+import { WithState, IWithStateStatic } from '../utils/store.mixin';
 
 import './user-form.element';
+import { IState } from '../backend/root.reducer';
+import { userLoadingSelector } from './backend/users.selectors';
+import { property } from '../utils/decorators';
 
-export class UserNewPageElement extends WithTemplate(HTMLElement) {
+export const UserNewPage: IWithStateStatic<IState> = WithState(
+  {
+    userLoading: userLoadingSelector,
+  },
+  WithTemplate(HTMLElement)
+);
+
+export class UserNewPageElement extends UserNewPage {
   private user: User = new User();
+  @property() private userLoading: boolean;
 
   public connectedCallback(): void {
     super.connectedCallback();
@@ -24,7 +36,11 @@ export class UserNewPageElement extends WithTemplate(HTMLElement) {
     return html`
       <h2>Add new User</h2>
 
-      <my-user-form user="${this.user}" on-save="${this.save}"></my-user-form>
+      <my-user-form
+        userLoading="${this.userLoading}"
+        user="${this.user}"
+        on-save="${this.save}"
+      ></my-user-form>
 
       <a href="/users" class="btn btn-default">back</a>
     `;

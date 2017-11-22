@@ -38,16 +38,15 @@ export function fetchUser(id: string): AnyAction {
 }
 
 export function createUser(user: IUser): ThunkAction<any, IState, any> {
-  return (dispatch: Dispatch<IState>) => {
+  return async (dispatch: Dispatch<IState>) => {
     const promise = httpPost(USERS_BASE_URL, user);
     dispatch({
       type: userCreateActions.base,
-      payload: httpPost(USERS_BASE_URL, user),
+      payload: promise,
     });
 
-    promise.then(() => {
-      dispatch({ type: ROUTE_UPDATE, payload: '/users' });
-    });
+    await promise;
+    dispatch({ type: ROUTE_UPDATE, payload: '/users' });
   };
 }
 

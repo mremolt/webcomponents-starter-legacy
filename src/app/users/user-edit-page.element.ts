@@ -17,7 +17,11 @@ export class UserEditPageElement extends UserDetailPageElement {
     return html`
       <h2>Edit User ${this.user.name}</h2>
 
-      <my-user-form user="${this.user}" on-save="${this.save}"></my-user-form>
+      <my-user-form
+        userLoading="${this.userLoading}"
+        user="${this.user}"
+        on-save="${this.save}"
+      ></my-user-form>
 
       <a href="/users/${this.user.id}" class="btn btn-default">back</a>
     `;

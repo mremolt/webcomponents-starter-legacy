@@ -4,7 +4,7 @@ import { html } from 'lit-html/lib/lit-extended';
 import { WithTemplate } from '../utils/template.mixin';
 import { property } from '../utils/decorators';
 import { fetchUser } from './backend/users.actions';
-import { userSelector } from './backend/users.selectors';
+import { userSelector, userLoadingSelector } from './backend/users.selectors';
 import { User } from './backend/user.class';
 import { routeParamsSelector } from '../backend/routes.selectors';
 import { WithState, IWithStateStatic } from '../utils/store.mixin';
@@ -13,6 +13,7 @@ import { IState } from '../backend/root.reducer';
 export const UserDetailPage: IWithStateStatic<IState> = WithState(
   {
     user: userSelector,
+    userLoading: userLoadingSelector,
     userId: (state: IState) => routeParamsSelector(state).id,
   },
   WithTemplate(HTMLElement)
@@ -20,6 +21,7 @@ export const UserDetailPage: IWithStateStatic<IState> = WithState(
 
 export class UserDetailPageElement extends UserDetailPage {
   @property() protected user: User = new User();
+  @property() protected userLoading: boolean;
 
   // tslint:disable-next-line:variable-name
   private _userId: string;

@@ -10,6 +10,10 @@ export const usersSelector = createSelector([rawUsersSelector], rawUsers => {
   return rawUsers.map((rawUser: IUser) => new User(rawUser));
 });
 
+export function userLoadingSelector(state: IState): boolean {
+  return state.currentUser.loading;
+}
+
 export function rawUserSelector(state: IState): IUser {
   return state.currentUser.entity;
 }

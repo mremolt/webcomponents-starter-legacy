@@ -51,12 +51,15 @@ export function setupRoutes(store: Store<IState>): void {
 }
 
 export function setupRouteActionListener(store: Store<IState>) {
+  let prevRoute: string;
+
   store.subscribe(() => {
     const route = routeSelector(store.getState());
     setTimeout(() => {
-      if (route !== window.location.pathname) {
-        // page.redirect(route);
+      if (route && route !== window.location.pathname && route !== prevRoute) {
+        page.redirect(route);
       }
+      prevRoute = route;
     });
   });
 }
