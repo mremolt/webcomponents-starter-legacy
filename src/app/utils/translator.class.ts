@@ -18,6 +18,8 @@ export interface ISettings {
   translations?: ITranslations;
 }
 
+export type ILocaleCallback = (locale: string) => void;
+
 export class Translator {
   private translations: ICompiledTranslations = {};
   private callbacks: Array<(locale: string) => void> = [];
@@ -27,11 +29,7 @@ export class Translator {
   }
 
   get locale(): string {
-    return (
-      this.settings.locale ||
-      localStorage.getItem('app:currentLocale') ||
-      this.defaultLocale
-    );
+    return this.settings.locale || localStorage.getItem('app:currentLocale') || this.defaultLocale;
   }
   set locale(locale: string) {
     if (!this.translations[locale]) {
@@ -55,23 +53,13 @@ export class Translator {
     });
   }
 
-  public addTranslation(
-    locale: string,
-    translation: ITranslation,
-    namespace?: string
-  ): void {
-    const compiledTranslation = Object.keys(
-      translation
-    ).reduce((result, key) => {
+  public addTranslation(locale: string, translation: ITranslation, namespace?: string): void {
+    const compiledTranslation = Object.keys(translation).reduce((result, key) => {
       const tkey = namespace ? `${namespace}:${key}` : key;
       return Object.assign({}, result, { [tkey]: compile(translation[key]) });
     }, {});
 
-    this.translations[locale] = Object.assign(
-      {},
-      this.translations[locale],
-      compiledTranslation
-    );
+    this.translations[locale] = Object.assign({}, this.translations[locale], compiledTranslation);
   }
 
   public translate(key: string, data?: any): string {
@@ -86,7 +74,12 @@ export class Translator {
     return this.translate(key, data);
   }
 
-  public onLocaleChange(cb: (locale: string) => void) {
+  public onLocaleChange(cb: ILocaleCallback): () => void {
     this.callbacks.push(cb);
+
+    return () => {
+      const position = this.callbacks.indexOf(cb);
+      this.callbacks = this.callbacks.splice(position, 1);
+    };
   }
 }

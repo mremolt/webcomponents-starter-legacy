@@ -9,8 +9,7 @@ const OfflinePlugin = require('offline-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const BrotliPlugin = require('brotli-webpack-plugin');
 
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-  .BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const ENV = (process.env.ENV = process.env.NODE_ENV = 'production');
 const HMR = false;

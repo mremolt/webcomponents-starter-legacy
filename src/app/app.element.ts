@@ -10,6 +10,16 @@ import { setupRouteActionListener } from './routes';
 import './header';
 import { translator } from './translator';
 
+// import Worker = require('worker-loader!./store.worker');
+
+// const worker = new Worker();
+
+// worker.postMessage({ a: 1 });
+
+// worker.addEventListener('message', (event: any) => {
+//   console.log('eeeeeee', event);
+// });
+
 export class AppElement extends WithTemplate(HTMLElement) {
   @property() private page: HTMLElement;
 
@@ -23,9 +33,7 @@ export class AppElement extends WithTemplate(HTMLElement) {
       }
     });
 
-    translator.onLocaleChange(() => {
-      this.updateView();
-    });
+    translator.onLocaleChange(this.updateView.bind(this));
 
     setupRouteActionListener(store);
   }

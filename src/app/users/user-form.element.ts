@@ -6,11 +6,10 @@ import { User } from './backend/user.class';
 import { WithTemplate } from '../utils/template.mixin';
 import { FormValidator } from '../utils/form-validator.class';
 import { property } from '../utils/decorators';
+import { translator } from '../translator';
 
 function validateFirstname(input: HTMLInputElement): string | null {
-  return input.value === 'Ford' || input.value.length >= 6
-    ? null
-    : 'invalidFirstName';
+  return input.value === 'Ford' || input.value.length >= 6 ? null : 'invalidFirstName';
 }
 
 function validateAero(input: HTMLInputElement): string | null {
@@ -21,6 +20,7 @@ export class UserFormElement extends WithTemplate(HTMLElement) {
   @property() private userLoading: boolean;
   // tslint:disable-next-line:variable-name
   private _user: User;
+  private localeSubscription: any;
 
   private formValidator: FormValidator;
 
@@ -61,22 +61,28 @@ export class UserFormElement extends WithTemplate(HTMLElement) {
     }
   }
 
+  public connectedCallback() {
+    super.connectedCallback();
+
+    this.localeSubscription = translator.onLocaleChange(this.updateView.bind(this));
+  }
+
   public onViewInit() {
     this.formValidator.form = this.form;
   }
 
+  public disconnectedCallback() {
+    this.localeSubscription();
+  }
+
   public renderErrors(key: string): TemplateResult {
     const errors = this.formValidator.getErrors(key);
-    return html`${repeat(
-      errors,
-      error => html`<div class="invalid-feedback">${error}</div>`
-    )}`;
+    return html`${repeat(errors, error => html`<div class="invalid-feedback">${error}</div>`)}`;
   }
 
   public render(): TemplateResult {
     return html`
-      <form novalidate on-input="${(e: any) =>
-        this.formValidator.updateForm(e)}" on-submit="${(e: Event) =>
+      <form novalidate on-input="${(e: any) => this.formValidator.updateForm(e)}" on-submit="${(e: Event) =>
       this.save(e)}">
         <div class="form-group row">
           <label for="inputFirstname" class="col-sm-2 col-form-label">Firstname</label>

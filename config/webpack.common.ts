@@ -10,8 +10,7 @@ const TS_VERSION = require('typescript').version;
 const extractSASS = new ExtractTextPlugin('[name]-sass.css');
 
 export default function(options: any): any {
-  const Environment = require(root('src', 'environments', options.APP_ENV))
-    .default;
+  const Environment = require(root('src', 'environments', options.APP_ENV)).default;
   const environment = new Environment();
 
   return {
@@ -90,8 +89,7 @@ export default function(options: any): any {
 
       new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor',
-        minChunks: module =>
-          module.context && module.context.indexOf('node_modules') !== -1,
+        minChunks: module => module.context && module.context.indexOf('node_modules') !== -1,
       }),
 
       new webpack.DefinePlugin({
@@ -115,6 +113,7 @@ export default function(options: any): any {
           from: 'src/manifest.json',
           to: '',
         },
+        { from: 'src/_redirects', to: '' },
       ]),
 
       extractSASS,

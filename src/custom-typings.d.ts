@@ -16,5 +16,13 @@ declare module '*.json' {
   export default value;
 }
 
+declare module 'worker-loader!*' {
+  class WebpackWorker extends Worker {
+    constructor();
+  }
+
+  export = WebpackWorker;
+}
+
 declare module 'redux-persist';
 declare module 'redux-persist/es/storage';

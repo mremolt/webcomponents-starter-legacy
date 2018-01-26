@@ -26,6 +26,19 @@ export default webpackMerge(commonConfig(options), {
   module: {
     rules: [
       {
+        test: /\.worker\.ts$/,
+        use: [
+          { loader: 'worker-loader', options: { inline: true, fallback: false } },
+          {
+            loader: 'ts-loader',
+            options: {
+              transpileOnly: true,
+              configFile: 'tsconfig.dev.json',
+            },
+          },
+        ],
+      },
+      {
         test: /\.ts$/,
         use: [
           {
