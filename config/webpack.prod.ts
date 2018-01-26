@@ -72,6 +72,7 @@ export default webpackMerge(commonConfig(options), {
       autoUpdate: 5 * 60 * 1000,
       AppCache: false,
       externals: ['/', 'users'],
+      excludes: ['_redirects'],
       ServiceWorker: {
         events: true,
       },
