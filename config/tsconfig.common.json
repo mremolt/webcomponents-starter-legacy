@@ -19,6 +19,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": false,
     "strict": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "strictPropertyInitialization": false
   }
 }

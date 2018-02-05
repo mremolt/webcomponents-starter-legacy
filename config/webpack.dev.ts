@@ -26,24 +26,20 @@ export default webpackMerge(commonConfig(options), {
   module: {
     rules: [
       {
-        test: /\.worker\.ts$/,
-        use: [
-          { loader: 'worker-loader', options: { inline: true, fallback: false } },
-          {
-            loader: 'ts-loader',
-            options: {
-              transpileOnly: true,
-              configFile: 'tsconfig.dev.json',
-            },
-          },
-        ],
-      },
-      {
         test: /\.ts$/,
         use: [
+          // activate on larger project, slower for small setup
+          // { loader: 'cache-loader' },
+          // {
+          //   loader: 'thread-loader',
+          //   options: {
+          //     workers: Math.max(require('os').cpus().length - 3, 2),
+          //   },
+          // },
           {
             loader: 'ts-loader',
             options: {
+              happyPackMode: true,
               transpileOnly: true,
               configFile: 'tsconfig.dev.json',
             },
@@ -57,6 +53,9 @@ export default webpackMerge(commonConfig(options), {
   plugins: [
     new ForkTsCheckerWebpackPlugin({
       tsconfig: root('tsconfig.dev.json'),
+      checkSyntacticErrors: true,
+      tslint: true,
+      watch: ['./src'],
     }),
   ],
 
