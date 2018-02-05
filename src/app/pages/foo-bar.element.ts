@@ -1,9 +1,6 @@
-import { WithTemplate } from '../utils/template.mixin';
-import { TemplateResult } from 'lit-html';
-import { html } from 'lit-html/lib/lit-extended';
-export class FooBarElement extends WithTemplate(HTMLElement) {
-  public render(): TemplateResult {
-    return html`<span>FOO BAR BAZ!!!</span>`;
+export class FooBarElement extends HTMLElement {
+  public connectedCallback() {
+    this.innerHTML = '<span>FOO BAR BAZ!</span>';
   }
 }
 
